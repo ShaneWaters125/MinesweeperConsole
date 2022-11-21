@@ -15,6 +15,8 @@ public class Grid {
     private boolean lost = false; //When true, game will end.
     private ArrayList<Tile> checked = new ArrayList<>(); //An array holding all the tiles which have been cleared so they are not cleared again.
 
+    private final String returnMsg = "Invalid Input!";
+
     public Grid(int cols, int rows){
         this.cols = cols;
         this.rows = rows;
@@ -73,11 +75,11 @@ public class Grid {
             if(checkValidInput(x, y)){
                 tiles[x][y].setFlagged(false);
             }else{
-                System.out.println("Invalid Input!");
+                System.out.println(returnMsg);
                 removeFlag();
             }
         } catch (InputMismatchException e){
-            System.out.println("Invalid Input!");
+            System.out.println(returnMsg);
             input = new Scanner(System.in);
         }
     }
@@ -100,11 +102,11 @@ public class Grid {
                     System.out.println("Can't flag a tile that is already revealed!");
                 }
             }else{
-                System.out.println("Invalid Input!");
+                System.out.println(returnMsg);
                 flagTile();
             }
         } catch (InputMismatchException e){
-            System.out.println("Invalid Input!");
+            System.out.println(returnMsg);
             input = new Scanner(System.in);
         }
 
@@ -139,11 +141,11 @@ public class Grid {
                     System.out.println("Unflag this tile if you want to flag it!");
                 }
             } else{
-                System.out.println("Invalid Input!");
+                System.out.println(returnMsg);
                 clearTile();
             }
         } catch (InputMismatchException e){
-            System.out.println("Invalid Input!");
+            System.out.println(returnMsg);
             input = new Scanner(System.in);
         }
 
@@ -161,38 +163,39 @@ public class Grid {
      */
     private void autoClear(int x, int y){
         boolean nearBomb = false;
-        if(tiles[x][y].getType() != TileENUM.BOMB){
-            tiles[x][y].setCleared(true);
-            Tile tile = new Tile(x, y, TileENUM.EMPTY);
-            checked.add(tile);
 
-            //To make sure more tiles than intended are not revealed, we must check to see if the tile borders a bomb since we auto reveal every square around a press.
-            if(calcBombs(x, y) > 0){
-                nearBomb = true;
-            }
+        tiles[x][y].setCleared(true);
+        Tile tile = new Tile(x, y, TileENUM.EMPTY);
+        checked.add(tile);
 
-            //For every tile around the current tile, reveal the tile if it's not a bomb and recursively call this method with neighbouring tiles of bomb count 0.
-            for(int col = x-1; col <= x+1; col++){
-                for(int row = y-1; row <= y+1; row++){
-                    if(!(col < 0 || row < 0) && !(col > cols-1 || row > rows-1)){
+        //To make sure more tiles than intended are not revealed, we must check to see if the tile borders a bomb since we auto reveal every square around a press.
+        if(calcBombs(x, y) > 0){
+            nearBomb = true;
+        }
 
-                        Tile newTile = new Tile(col, row, TileENUM.EMPTY);
+        //For every tile around the current tile, reveal the tile if it's not a bomb and recursively call this method with neighbouring tiles of bomb count 0.
+        for(int col = x-1; col <= x+1; col++){
+            for(int row = y-1; row <= y+1; row++){
+                if(inBounds(col, row)){
+                    Tile newTile = new Tile(col, row, TileENUM.EMPTY);
 
-                        //Don't reveal tiles around the current tile if the current tile is next to a bomb.
-                        if(!nearBomb){
-                            tiles[col][row].setCleared(true);
-                        }
-
-                        //Recursively call this function if a neighbouring tile is 0, has no bombs next to it, and has not been checked before.
-                        if(calcBombs(col, row) == 0 && !checked.contains(newTile)){
-                            autoClear(col, row);
-                        }
-
+                    //Don't reveal tiles around the current tile if the current tile is next to a bomb.
+                    if(!nearBomb){
+                        tiles[col][row].setCleared(true);
                     }
+
+                    //Recursively call this function if a neighbouring tile is 0, has no bombs next to it, and has not been checked before.
+                    if(calcBombs(col, row) == 0 && !checked.contains(newTile)){
+                        autoClear(col, row);
+                    }
+
                 }
             }
-
         }
+    }
+
+    private boolean inBounds(int col, int row){
+        return !(col < 0 || row < 0) && !(col > cols - 1 || row > rows - 1);
     }
 
     public int getCols() {

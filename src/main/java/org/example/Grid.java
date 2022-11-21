@@ -15,6 +15,8 @@ public class Grid {
     private boolean lost = false; //When true, game will end.
     private ArrayList<Tile> checked = new ArrayList<>(); //An array holding all the tiles which have been cleared so they are not cleared again.
 
+    private boolean nearBomb = false;
+
     private final String returnMsg = "Invalid Input!";
 
     public Grid(int cols, int rows){
@@ -162,7 +164,7 @@ public class Grid {
      * @param y
      */
     private void autoClear(int x, int y){
-        boolean nearBomb = false;
+        nearBomb = false;
 
         tiles[x][y].setCleared(true);
         Tile tile = new Tile(x, y, TileENUM.EMPTY);
@@ -173,6 +175,11 @@ public class Grid {
             nearBomb = true;
         }
 
+        checktiles(x, y);
+
+    }
+
+    private void checktiles(int x, int y){
         //For every tile around the current tile, reveal the tile if it's not a bomb and recursively call this method with neighbouring tiles of bomb count 0.
         for(int col = x-1; col <= x+1; col++){
             for(int row = y-1; row <= y+1; row++){
@@ -193,6 +200,7 @@ public class Grid {
             }
         }
     }
+
 
     private boolean inBounds(int col, int row){
         return !(col < 0 || row < 0) && !(col > cols - 1 || row > rows - 1);

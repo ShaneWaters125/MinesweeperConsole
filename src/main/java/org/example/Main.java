@@ -21,6 +21,9 @@ public class Main {
             int cols = input.nextInt();
             if(rows > 0 && cols > 0 && rows < 51 && cols < 51){
                 Grid grid = new Grid(cols, rows);
+                while(grid.checkWin()){
+                    grid.playGame();
+                }
             }else{
                 System.out.println("Invalid Input! Try Again.");
                 initGame();

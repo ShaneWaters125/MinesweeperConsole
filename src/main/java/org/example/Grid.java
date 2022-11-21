@@ -24,9 +24,7 @@ public class Grid {
         this.rows = rows;
         tiles = new Tile[cols][rows];
         generateGrid();
-        while(checkWin()){
-            playGame();
-        }
+
     }
 
     /**
@@ -50,7 +48,7 @@ public class Grid {
     /**
      * Prompts the user for their input.
      */
-    private void playGame(){
+    public void playGame(){
         input = new Scanner(System.in);
         printGrid(false);
         System.out.println("Type C: Clear Tile, F: Flag Tile, U: Unflag Tile");
@@ -153,7 +151,7 @@ public class Grid {
 
     }
 
-    private boolean checkValidInput(int x, int y){
+    public boolean checkValidInput(int x, int y){
         return x >= 0 && x < cols && y >= 0 && y < rows;
     }
 
@@ -163,7 +161,7 @@ public class Grid {
      * @param x
      * @param y
      */
-    private void autoClear(int x, int y){
+    public void autoClear(int x, int y){
         nearBomb = false;
 
         tiles[x][y].setCleared(true);
@@ -226,7 +224,7 @@ public class Grid {
      * Whenever the user reveals a tile, we must check to see if they have met the win condition.
      * @return Whether the user has won or not.
      */
-    private boolean checkWin(){
+    public boolean checkWin(){
         if(lost){
             return false;
         }
@@ -250,7 +248,7 @@ public class Grid {
      * @param row the y position of the tile.
      * @return How many bombs there are around a tile.
      */
-    private int calcBombs(int col, int row){
+    public int calcBombs(int col, int row){
         int bombTotal = 0;
         for(int x = col-1; x <= col+1; x++){
             for(int y = row-1; y <= row+1; y++){
@@ -320,4 +318,7 @@ public class Grid {
         System.out.println();
     }
 
+    public Tile[][] getTiles() {
+        return tiles;
+    }
 }

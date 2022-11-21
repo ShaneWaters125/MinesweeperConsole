@@ -270,20 +270,9 @@ public class Grid {
      */
     public void printGrid(boolean showBombs){
         Tile tile;
-        System.out.print("    ");
-        for(int x = 0; x<rows; x++){
-            if(x < 10){
-                System.out.print( x + "  ");
-            } else if(x < 100){
-                System.out.print( x + " ");
-            }
-        }
-        System.out.println();
+        printSpacingHorizontal();
         for(int col = 0; col <  cols ; col++){ //cols
-            System.out.print(col);
-            if(col < 10){
-                System.out.print(" ");
-            }
+            printSpacingVertical(col);
             for(int row = 0; row < rows; row++){ //rows
                 System.out.print("  ");
                 tile = tiles[col][row];
@@ -310,4 +299,25 @@ public class Grid {
             }
         }
     }
+
+    private void printSpacingVertical(int col){
+        System.out.print(col);
+        if(col < 10){
+            System.out.print(" ");
+        }
+    }
+
+
+    private void printSpacingHorizontal(){
+        System.out.print("    ");
+        for(int x = 0; x<rows; x++){
+            if(x < 10){
+                System.out.print( x + "  ");
+            } else if(x < 100){
+                System.out.print( x + " ");
+            }
+        }
+        System.out.println();
+    }
+
 }

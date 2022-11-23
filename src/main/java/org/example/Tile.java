@@ -61,18 +61,4 @@ public class Tile {
         Tile tile = (Tile) o;
         return x == tile.x && y == tile.y;
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(x, y);
-    }
-
-    @Override
-    public String toString() {
-        return "Tile{" +
-                "x=" + x +
-                ", y=" + y +
-                ", type=" + type +
-                '}';
-    }
 }

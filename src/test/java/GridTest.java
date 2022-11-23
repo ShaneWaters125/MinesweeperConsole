@@ -121,6 +121,21 @@ public class GridTest {
         Assertions.assertEquals(false, grid.checkWin());
     }
 
+    @Test
+    public void testLost(){
+        Grid grid = new Grid(3, 3);
+        Tile[][] tiles = grid.getTiles();
+        //Check win has its return condition reversed
+        Assertions.assertEquals(true, grid.checkWin());
+        for(int x = 0; x < 3; x++){
+            for(int y = 0; y < 3; y++){
+                tiles[x][y].setType(TileENUM.BOMB);
+                tiles[x][y].setCleared(true);
+            }
+        }
+        Assertions.assertEquals(false, grid.checkWin());
+    }
+
 
 
     @Test
@@ -130,6 +145,8 @@ public class GridTest {
         grid.printGrid(false);
         Assertions.assertTrue(true);
     }
+
+
 
 
 }

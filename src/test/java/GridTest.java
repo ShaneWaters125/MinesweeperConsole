@@ -1,3 +1,4 @@
+import com.sun.source.tree.AssertTree;
 import org.example.Grid;
 import org.example.Tile;
 import org.example.TileENUM;
@@ -118,6 +119,16 @@ public class GridTest {
             }
         }
         Assertions.assertEquals(false, grid.checkWin());
+    }
+
+
+
+    @Test
+    public void testPrint(){
+        Grid grid = new Grid(3, 3);
+        grid.printGrid(true);
+        grid.printGrid(false);
+        Assertions.assertTrue(true);
     }
 
 
